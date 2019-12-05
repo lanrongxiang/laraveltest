@@ -18,4 +18,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::post('projects', ['uses'=>'ProjectsController@store','as'=> 'projects.store']);
+Route::post('projects', 'ProjectsController@store')->name('projects.store');

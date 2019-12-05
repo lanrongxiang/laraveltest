@@ -13,7 +13,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      {!! Form::open(['route'=>'projects.store','method'=>'POST']) !!} 
+      {!! Form::open(['route'=>'projects.store','method'=>'POST','files'=>1],) !!} 
       <div class="modal-body">
           <div class="form-group">
             {!! Form::label('name', '项目名称') !!}
