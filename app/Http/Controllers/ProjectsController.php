@@ -2,29 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProjectRequest;
+use App\Repositories\ProjectsRepository;
 use Illuminate\Http\Request;
-use Image;
+
+
 class ProjectsController extends Controller
 {
-    public function store(Request $request){
-       
-        $request->user()->projects()->create([
-            'name'=>$request->name,
-            'thumbnail'=>$this->thumb($request),
-        ]);
-        
+    protected $repo;
+    public function __construct(ProjectsRepository $repo)
+    {
+        $this->repo = $repo;
     }
-    public function thumb($request){
-
-        if ($request->hasFile('thumbnail')){
-            $thumb= $request->thumbnail;
-            $name=$thumb->hashName();
-            $thumb->storeAs('public/thumbs/original',$name);
-
-            $path=storage_path('app/public/thumbs/cropped/'.$name);
-            Image::make($thumb)->resize(200,90)->save($path);
-            return $name;
-        }
+    public function store(CreateProjectRequest $request)//经过CreateProjectRequest验证器验证过在执行下面的代码
+    {
+        $this->repo->create($request);
+        return back();//重定向上一个页面
     }
+   
 }
-    

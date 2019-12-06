@@ -27,6 +27,7 @@ class HomeController extends Controller
     }
     public function root()
     {
-        return view('welcome');
+        $projects=request()->user()->projects()->get();//列出当前用户的信息
+        return view('welcome',compact('projects'));//向页面传递变量
     }
 }
