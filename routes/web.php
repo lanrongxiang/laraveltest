@@ -11,11 +11,13 @@
 |
 */
 
-Route::get('/', 'HomeController@root');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'ProjectsController@index');
 
+Route::resource('projects', 'ProjectsController');
+Route::resource('tasks', 'TasksController');
 
-Route::post('projects', 'ProjectsController@store')->name('projects.store');
+Route::post('tasks/{id}/check','TasksController@check')->name('tasks.check');

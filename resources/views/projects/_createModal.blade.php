@@ -1,5 +1,5 @@
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPorjetsModal">
+<button type="button" class="btn modal-trigger" data-toggle="modal" data-target="#createPorjetsModal">
   <i class="fa fa-btn fa-plus"></i>
 </button>
 
@@ -18,13 +18,24 @@
           <div class="form-group">
             {!! Form::label('name', '项目名称') !!}
             {!! Form::text('name', '', ['class'=>'form-control']) !!}
+             {!! $errors->create->first('name','<div class="alert alert-danger">:message</div>') !!}
           </div>
           
           <div class="form-group">
             {!! Form::label('thumbnail', '项目缩略图') !!}
             {!! Form::file('thumbnail',['class'=>'form-control-file']) !!}
+             {!! $errors->create->first('thumbnail','<div class="alert alert-danger">:message</div>') !!}
+
           </div>
-           @include('errors._errors')
+           {{-- @include('errors._errors') --}}
+           {{-- @if ($errors->create->any())
+               <ul class="alert alert-danger"> --}}
+              {{-- 错误信息不止一个所以需要遍历,获取所有的错误信息as单个error --}}
+              {{-- @foreach ($errors->create->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+           @endif --}}
         </div>
         <div class="modal-footer">
             {!! Form::submit('新建项目', ['class'=>'btn btn-primary']) !!}

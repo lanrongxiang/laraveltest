@@ -4,10 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule; //调用Rule额外的class
+use Illuminate\Contracts\Validation\Validator;
 
-class CreateProjectRequest extends FormRequest
+
+class UpdateProjectRequest extends FormRequest
 {
-    protected $errorBag = 'create';
+    // protected $errorBag = 'update';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,8 +31,8 @@ class CreateProjectRequest extends FormRequest
             'name' => [
                 'required', //必填的,
                 // 'unique:projects' 不允许同时存在两个,这个projects表里面name这一栏.
-                Rule::unique('projects')->where(function ($query) {
-                    //porjects这张表,条件是一个匿名函数需要$query参数,返回这个参数看这张表的user_id是否和登录用户的id一样
+                Rule::unique('projects')->ignore($this->route('project'))->where(function ($query) {
+                    //porjects这张表,排除自身获取路由中的参数,条件是一个匿名函数需要$query参数,返回这个参数看这张表的user_id是否和登录用户的id一样
                     return $query->where('user_id', request()->user()->id);
                 })
             ],
@@ -45,5 +47,11 @@ class CreateProjectRequest extends FormRequest
             'thumbnail.dimensions' => '图片的最小尺寸是260*100px',
             'thumbnail.max' => '不要上传超过2M的图片',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $this->errorBag = 'update-'.$this->route('project');
+        parent::failedValidation($validator);
     }
 }
